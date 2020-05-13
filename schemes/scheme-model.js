@@ -22,7 +22,10 @@ function findSteps(id){
 }
 
 function add(scheme){
-    
+    return db('schemes').insert(scheme)
+    .then(([newId]) =>{
+        return findById(newId);
+    })
 }
 
 function update(changes, id){
