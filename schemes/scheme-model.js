@@ -18,7 +18,9 @@ function findById(id){
 }
 
 function findSteps(id){
-    return db('steps').where({scheme_id:id})
+    return db.select('steps.id', "schemes.scheme_name", 'steps.step_number', 'steps.instructions').from('steps')
+    .join('schemes', 'steps.scheme_id', "=", "schemes.id")
+    .where({scheme_id:id})
 }
 
 function add(scheme){
@@ -29,9 +31,12 @@ function add(scheme){
 }
 
 function update(changes, id){
-    
+    return db('schemes').where({id}).update(changes)
+    .then(count =>{
+        return findById(id);
+    });
 }
 
 function remove(id){
-    
+    return db('schemes').where({id}).del();
 }
